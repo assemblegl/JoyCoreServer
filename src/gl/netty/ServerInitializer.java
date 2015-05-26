@@ -7,12 +7,13 @@ import io.netty.handler.ssl.SslContext;
 
 public class ServerInitializer extends ChannelInitializer<SocketChannel>{
 	
-	private final SslContext sslCtx;
+	private  SslContext sslCtx;
 
-    public ServerInitializer(SslContext sslCtx) {
-        this.sslCtx = sslCtx;
+
+    public void init(SslContext sslCtx){
+    	this.sslCtx = sslCtx;
     }
-
+    
     @Override
     public void initChannel(SocketChannel ch) {
         ChannelPipeline pipeline = ch.pipeline();

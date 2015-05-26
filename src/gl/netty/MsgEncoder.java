@@ -11,22 +11,13 @@ public class MsgEncoder extends MessageToByteEncoder<String> {
 	
 	@Override
     protected void encode(ChannelHandlerContext ctx, String msg, ByteBuf out) {
-		
-		
-        // Convert to a BigInteger first for easier implementation.
-        /*BigInteger v;
-        if (msg instanceof BigInteger) {
-            v = (BigInteger) msg;
-        } else {
-            v = new BigInteger(String.valueOf(msg));
-        }*/
 
         // Convert the number into a byte array.
         byte[] data = msg.getBytes();
         int dataLength = data.length;
                
-        // Write a message.
-        out.writeByte((byte) 'J'); // magic number       
+        // Write a message.              
+        out.writeInt(Context.headNum);  //data head
         out.writeInt(Context.msgVersion);  // data version
         out.writeInt(dataLength);  // data length
         out.writeBytes(data);      // data

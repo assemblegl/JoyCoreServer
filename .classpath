@@ -4,5 +4,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8"/>
 	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib/presto-jdbc-0.103.jar"/>
 	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib/netty-all-4.0.28.Final.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/com.springsource.org.apache.commons.logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/com.springsource.org.apache.log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/jmxtools-1.2.1.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/org.springframework.asm-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/org.springframework.beans-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/org.springframework.context-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/org.springframework.core-3.0.5.RELEASE.jar"/>
+	<classpathentry kind="lib" path="E:/ecplisews/JoyPrestoServer/lib-spring/org.springframework.expression-3.0.5.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

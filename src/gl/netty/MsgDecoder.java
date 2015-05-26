@@ -14,17 +14,17 @@ public class MsgDecoder extends ByteToMessageDecoder {
 	 @Override
 	    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
 	        // Wait until the length prefix is available.
-	        if (in.readableBytes() < 9) {
+	        if (in.readableBytes() < 12) {
 	            return;
 	        }
 
 	        in.markReaderIndex();
 
-	        // Check the magic number.
-	        int magicNumber = in.readUnsignedByte();
-	        if (magicNumber != 'J') {
+	        // Check the head number.
+	        int headNumber = in.readInt();
+	        if (headNumber != Context.headNum) {
 	            in.resetReaderIndex();
-	            throw new CorruptedFrameException("Invalid magic number: " + magicNumber);
+	            throw new CorruptedFrameException("Invalid head number: " + headNumber);
 	        }
 	        
 	        // check version

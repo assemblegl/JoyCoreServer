@@ -3,6 +3,8 @@ package gl.netty;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import gl.presto.Presto;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -11,7 +13,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 
 public class ServerHandler extends SimpleChannelInboundHandler<String>{	
-
+	private static Logger logger = Logger.getLogger(ServerHandler.class); 
+		
+	
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
     	String res = "";
@@ -66,5 +70,17 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
         cause.printStackTrace();
         ctx.close();
     }
+    
+    public void printError(String Content){		
+		String ec=this.getClass().getName()+","+Content;				
+		System.out.println(ec);
+		logger.error(ec);
+	}
+	
+	public void printInfo(String Content){
+		String ec=this.getClass().getName()+","+Content;		
+		System.out.println(ec);
+		logger.info(ec);
+	}
 
 }
