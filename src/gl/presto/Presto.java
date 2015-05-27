@@ -9,6 +9,10 @@ import java.sql.Statement;
 
 public class Presto {
 	private Connection connection;
+	private String port;
+	private String ip;
+	private String passwd;
+	private String username;
 	
 	static{
 		try {
@@ -18,17 +22,19 @@ public class Presto {
 		} 
 	}
 	
-	public Presto(String ip,String port,String user,String pass){
-		try {
-			connection = DriverManager.getConnection("jdbc:presto://"+ip+":"+port,user,pass);
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} 
+	public Presto(String ip,String port,String username,String passwd){
+		this.ip = ip;
+		this.port = port;
+		this.username = username;
+		this.passwd = passwd;				 
 	}
 	
 	public ResultSet exec(String sql){
 		Statement stmt;
 		try {
+			if(null == connection ||  connection.isValid(0)){
+				connection = DriverManager.getConnection("jdbc:presto://"+ip+":"+port,username,passwd);
+			}
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(sql);
 			return rs;

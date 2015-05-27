@@ -9,12 +9,15 @@ import io.netty.handler.codec.CorruptedFrameException;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class MsgDecoder extends ByteToMessageDecoder {
+	private static Logger logger = Logger.getLogger(MsgDecoder.class); 
 	
 	 @Override
-	    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
-	        // Wait until the length prefix is available.
-	        if (in.readableBytes() < 12) {
+	 protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
+		// Wait until the length prefix is available.
+		 if (in.readableBytes() < 12) {
 	            return;
 	        }
 
@@ -30,10 +33,9 @@ public class MsgDecoder extends ByteToMessageDecoder {
 	        // check version
 	        int msgVersion = in.readInt();
 	        if(msgVersion != Context.msgVersion){
-	        	System.out.println("error!break get version:"+msgVersion+",myVersion:"+Context.msgVersion);
-	        	return;
+	        	throw new CorruptedFrameException("Invalid head msgVersion: " + msgVersion+",myVersion:"+Context.msgVersion);	        	
 	        }
-	        System.out.println("get version:"+msgVersion+",myVersion:"+Context.msgVersion);
+	        printInfo("get version:"+msgVersion+",myVersion:"+Context.msgVersion);
 	        
 	        // Wait until the whole data is available.
 	        int dataLength = in.readInt();
@@ -46,7 +48,20 @@ public class MsgDecoder extends ByteToMessageDecoder {
 	        byte[] decoded = new byte[dataLength];
 	        in.readBytes(decoded);
 
-	        out.add(new String(decoded));
-	    }
+	        out.add(new String(decoded));       
+		 
+	    }   
+	 
+	 public void printError(String Content){		
+			String ec=this.getClass().getName()+","+Content;				
+			System.out.println(ec);
+			logger.error(ec);
+		}
+		
+	 public void printInfo(String Content){
+			String ec=this.getClass().getName()+","+Content;		
+			System.out.println(ec);
+			logger.info(ec);
+		}	
 
 }

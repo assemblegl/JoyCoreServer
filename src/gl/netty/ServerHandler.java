@@ -14,15 +14,19 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 public class ServerHandler extends SimpleChannelInboundHandler<String>{	
 	private static Logger logger = Logger.getLogger(ServerHandler.class); 
-		
+	
+	private Presto presto;
+	
+	public ServerHandler(String Pip,String Pport,String Pusername,String Ppasswd){		
+		this.presto = new Presto(Pip,Pport,Pusername,Ppasswd); 
+	}
 	
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
     	String res = "";
 		try{
-			System.out.println("msg:"+msg+".");
-	    	Presto joyp = new Presto("42.62.84.100","8080","root",null);   	
-			ResultSet rs = joyp.exec(msg);			
+			System.out.println("msg:"+msg+".");	    	 	
+			ResultSet rs = presto.exec(msg);			
 			
 			if(null == rs){
 				try{
@@ -34,7 +38,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
 			
 			if(null != rs){	
 				try {
-					while (rs.next()) {
+					while (rs.next()) {						
 						res+=rs.getString(1)+","+rs.getString(2)+","+rs.getString(3)+"\n";
 						//System.out.println(rs.getString(1)+","+rs.getString(2)+","+rs.getString(3));
 						}

@@ -19,9 +19,21 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 
 public class Server {
 	private static Logger logger = Logger.getLogger(Server.class);	
-	private ServerInitializer serverinit;
-	private int port;
+	private int Sport;
 	private boolean ssl;
+	private String Pport;
+	private String Pip;
+	private String Ppasswd;
+	private String Pusername;
+	
+	public Server(int Sport,boolean ssl,String Pip,String Pport,String Pusername,String Ppasswd){
+		this.Sport = Sport;
+		this.ssl = ssl;
+		this.Pip = Pip;
+		this.Pport = Pport;
+		this.Pusername = Pusername;
+		this.Ppasswd = Ppasswd;
+	}
 	
     public int run()  {
         // Configure SSL.
@@ -53,8 +65,8 @@ public class Server {
             b.group(bossGroup, workerGroup)
              .channel(NioServerSocketChannel.class)
              .handler(new LoggingHandler(LogLevel.INFO))
-             .childHandler(serverinit);
-            b.bind(port).sync().channel().closeFuture().sync();           							
+             .childHandler(new ServerInitializer(sslCtx,Pip,Pport,Pusername,Ppasswd));
+            b.bind(Sport).sync().channel().closeFuture().sync();           							
         } catch (InterruptedException e) {				
 			printError(e.getMessage());
 			return Context.error;
@@ -66,44 +78,6 @@ public class Server {
         return Context.success;
     }
     
-    
-    
-    public ServerInitializer getServerinit() {
-		return serverinit;
-	}
-
-
-
-	public void setServerinit(ServerInitializer serverinit) {
-		this.serverinit = serverinit;
-	}
-
-	
-
-	public int getPort() {
-		return port;
-	}
-
-
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-
-
-	public boolean isSsl() {
-		return ssl;
-	}
-
-
-
-	public void setSsl(boolean ssl) {
-		this.ssl = ssl;
-	}
-
-
-
 	public void printError(String Content){		
 		String ec=this.getClass().getName()+","+Content;				
 		System.out.println(ec);

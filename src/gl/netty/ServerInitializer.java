@@ -1,17 +1,28 @@
 package gl.netty;
 
+import org.apache.log4j.Logger;
+
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslContext;
 
 public class ServerInitializer extends ChannelInitializer<SocketChannel>{
+	private static Logger logger = Logger.getLogger(ServerInitializer.class);
 	
+	private String Pport;
+	private String Pip;
+	private String Ppasswd;
+	private String Pusername;
 	private  SslContext sslCtx;
 
 
-    public void init(SslContext sslCtx){
+    public ServerInitializer (SslContext sslCtx,String Pip,String Pport,String Pusername,String Ppasswd){
     	this.sslCtx = sslCtx;
+    	this.Pip = Pip;
+		this.Pport = Pport;
+		this.Pusername = Pusername;
+		this.Ppasswd = Ppasswd;
     }
     
     @Override
@@ -30,10 +41,8 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel>{
         pipeline.addLast(new MsgDecoder());
         pipeline.addLast(new MsgEncoder());
         
-        // and then business logic.
-        // Please note we create a handler for every new channel
-        // because it has stateful properties.
-        pipeline.addLast(new ServerHandler());
+        //b logic
+        pipeline.addLast(new ServerHandler(Pip,Pport,Pusername,Ppasswd));
     }
 
 }
