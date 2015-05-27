@@ -3,6 +3,8 @@ package gl.netty;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +18,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 public class ServerHandler extends SimpleChannelInboundHandler<String>{	
 	private static Logger logger = Logger.getLogger(ServerHandler.class); 	
 	private Presto presto;
-	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public ServerHandler(String Pip,String Pport,String Pusername,String Ppasswd){		
 		this.presto = new Presto(Pip,Pport,Pusername,Ppasswd); 
 	}
@@ -24,17 +26,19 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
     	String res = "";
-		try{
-			printInfo("sql:"+msg+".");	    	 	
-			ResultSet rs = presto.exec(msg);			
+		try{			
+			printInfo("sql:"+msg+".");
+			printInfo("start time:"+sdf.format(new Date()));
+			ResultSet rs = presto.exec(msg);
+			printInfo("presto exec end time:"+sdf.format(new Date()));
 			res = analyseRs(rs);
-			
+			printInfo("netty end time:"+sdf.format(new Date()));
 		}catch(SQLException e){
 			res += e.getMessage();			
 		}catch(InterruptedException e){
 			res+=e.getMessage();
 		}finally{
-			printInfo(res);
+			//printInfo(res);
 			final ChannelFuture f = ctx.writeAndFlush(res);
 	        f.addListener(new ChannelFutureListener() {
 	            @Override
@@ -85,10 +89,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
 			
 			rs.close();
 		} catch (SQLException e) {			
-			e.printStackTrace();
+			printError(e.getMessage());
 			return e.getMessage();
-		} 
-    	
+		}     	
     	return res;
   	
     }
@@ -100,7 +103,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
     
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
+        printError(cause.getMessage());
         ctx.close();
     }
     
