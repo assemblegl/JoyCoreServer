@@ -35,7 +35,7 @@ public class MsgDecoder extends ByteToMessageDecoder {
 	        if(msgVersion != Context.msgVersion){
 	        	throw new CorruptedFrameException("Invalid head msgVersion: " + msgVersion+",myVersion:"+Context.msgVersion);	        	
 	        }
-	        printInfo("get version:"+msgVersion+",myVersion:"+Context.msgVersion);
+	        //printInfo("get version:"+msgVersion+",myVersion:"+Context.msgVersion);
 	        
 	        // Wait until the whole data is available.
 	        int dataLength = in.readInt();

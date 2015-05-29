@@ -67,14 +67,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
 			
 	          //第一个字段名从1开始
 	    	   res += rmd.getColumnName(i+1);	    	   	    	   
-		}
-    	
-		//字段名输出完成换行
-    	res+="\n";
+		}  
 		
     	try {
 			while (rs.next()) {				
 			
+				res+="\r\n";
 				for(int i=0;i<columnNum;i++){			
 					if(i != 0){
 						res+=",";
@@ -83,7 +81,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<String>{
 			          //第一个字段名从1开始
 			    	   res += rs.getString(i+1);	    	   	    	   
 				}
-				res+="\n";
+				
 								
 			}
 			
